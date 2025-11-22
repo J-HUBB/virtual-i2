@@ -6,14 +6,14 @@ export default function Sidebar() {
         <div className="sidebar__logo">
           <img
             alt=""
-            srcset="./assets/logo.png"
-            src="./assets/logo.png"
+            src-set="/assets/logo.png"
+            src="/assets/logo.png"
             width="495"
             height="114"
             decoding="async"
             data-nimg="1"
             loading="lazy"
-            //style="color:transparent"
+            style={{color:"transparent"}}
           />
         </div>
         <div className="sidebar__wrapper">

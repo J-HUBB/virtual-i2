@@ -1,4 +1,5 @@
 export default function Searchbar() {
+  
   return (
     <div className="search__background">
       <div className="search__wrapper">

@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { booksApi } from "./booksSlice"
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: {
@@ -8,4 +9,6 @@ export const store = configureStore({
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(booksApi.middleware),
-})
+});
+
+setupListeners(store.dispatch);
