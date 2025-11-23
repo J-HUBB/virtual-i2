@@ -21,7 +21,7 @@ const RecommendedBooks = ({
 }: book) => {
 
   return (
-    <Link href="/book/${id}" className="for-you__recommended--books-link">
+    <Link href={`/book/${id}`} className="for-you__recommended--books-link">
       <audio src={audioLink}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img

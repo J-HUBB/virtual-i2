@@ -1,4 +1,5 @@
 import { book } from "@/Redux/booksSlice";
+import Link from "next/link";
 
 const SuggestedBooks = ({
   id,
@@ -20,7 +21,7 @@ const SuggestedBooks = ({
 }: book) => {
     
   return (
-    <a className="for-you__recommended--books-link" href="/book/${id}">
+    <Link href={`/book/${id}`} className="for-you__recommended--books-link">
       <audio src={audioLink}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img
@@ -68,7 +69,7 @@ const SuggestedBooks = ({
           <div className="recommended__book--details-text">{averageRating}</div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

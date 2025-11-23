@@ -21,14 +21,15 @@ const BooksPage = () => {
       <div className="row">
         <audio src="/"></audio>
         <div className="container">
+          {book?.map((Book: book) => (
           <div className="inner__wrapper">
             <div className="inner__book">
               <div className="inner-book__title">
-                How to Win Friends and Influence People in the Digital Age{}
+              {Book.title}
               </div>
-              <div className="inner-book__author">Dale Carnegie</div>
+              <div className="inner-book__author">{Book.author}</div>
               <div className="inner-book__sub--title">
-                Time-tested advice for the digital age
+                {Book.subTitle}
               </div>
               <div className="inner-book__wrapper">
                 <div className="inner-book__description--wrapper">
@@ -169,34 +170,11 @@ const BooksPage = () => {
                 </div>
               </div>
               <div className="inner-book__book--description">
-                "How to Win Friends and Influence People" is a self-help book
-                written by Dale Carnegie and first published in 1936. The book
-                provides practical advice and techniques for improving one's
-                communication and social skills, with the goal of building
-                better relationships and becoming more influential in both
-                personal and professional settings. The book covers topics such
-                as the importance of smiling, listening actively, giving honest
-                and sincere appreciation, avoiding criticism, and becoming
-                genuinely interested in others. It also emphasizes the power of
-                empathy and understanding other people's perspectives. "How to
-                Win Friends and Influence People" has been widely read and
-                praised for its timeless and practical advice, and is considered
-                a classNameic in the field of self-improvement.
+                {Book.bookDescription}
               </div>
               <h2 className="inner-book__secondary--title">About the author</h2>
               <div className="inner-book__author--description">
-                Dale Carnegie (1888-1955) was an American author, lecturer, and
-                developer of self-improvement courses. He is best known for his
-                book "How to Win Friends and Influence People," which has sold
-                over 30 million copies worldwide and is considered a classNameic
-                in the self-help genre. Carnegie's teachings focused on
-                improving interpersonal skills, communication, and leadership,
-                and his courses and books were aimed at helping individuals
-                become more confident, successful, and influential in both their
-                personal and professional lives. He also founded the Dale
-                Carnegie Training program, which is still in operation today and
-                has helped millions of people around the world improve their
-                communication and leadership skills.
+                {Book.authorDescription}
               </div>
             </div>
             <div className="inner-book--img-wrapper">
@@ -213,6 +191,7 @@ const BooksPage = () => {
               </figure>
             </div>
           </div>
+          ))}
         </div>
       </div>
     </div>
