@@ -1,9 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useGetBookByIdQuery, book } from "@/Redux/booksSlice";
+import { useGetBookByIdQuery } from "@/Redux/booksSlice";
 import Searchbar from "@/components/Searchbar";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
 
 const BooksPage = () => {
   const {id} = useParams<{ id: string }>();
@@ -19,17 +20,17 @@ const BooksPage = () => {
       <Searchbar />
       <Sidebar />
       <div className="row">
-        <audio src="/"></audio>
+        <audio src="/">
+        </audio>
         <div className="container">
-          {book?.map((Book: book) => (
           <div className="inner__wrapper">
             <div className="inner__book">
               <div className="inner-book__title">
-              {Book.title}
+              {book?.title}
               </div>
-              <div className="inner-book__author">{Book.author}</div>
+              <div className="inner-book__author">{book?.author}</div>
               <div className="inner-book__sub--title">
-                {Book.subTitle}
+                {book?.subTitle}
               </div>
               <div className="inner-book__wrapper">
                 <div className="inner-book__description--wrapper">
@@ -47,9 +48,9 @@ const BooksPage = () => {
                         <path d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z"></path>
                       </svg>
                     </div>
-                    <div className="inner-book__overall--rating">4.4&nbsp;</div>
+                    <div className="inner-book__overall--rating">{book?.averageRating}</div>
                     <div className="inner-book__total--rating">
-                      (608&nbsp;ratings)
+                      ({book?.totalRating} ratings)
                     </div>
                   </div>
                   <div className="inner-book__description">
@@ -104,11 +105,12 @@ const BooksPage = () => {
                         ></path>
                       </svg>
                     </div>
-                    <div className="inner-book__key--ideas">8 Key ideas</div>
+                    <div className="inner-book__key--ideas">{book?.keyIdeas} Key ideas</div>
                   </div>
                 </div>
               </div>
               <div className="inner-book__read--btn-wrapper">
+                <Link href={`/player/${id}`}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon">
                     <svg
@@ -125,6 +127,8 @@ const BooksPage = () => {
                   </div>
                   <div className="inner-book__read--text">Read</div>
                 </button>
+                 </Link>
+                 <Link href={`/player/${id}`}>
                 <button className="inner-book__read--btn">
                   <div className="inner-book__read--icon">
                     <svg
@@ -141,6 +145,7 @@ const BooksPage = () => {
                   </div>
                   <div className="inner-book__read--text">Listen</div>
                 </button>
+                </Link>
               </div>
               <div className="inner-book__bookmark">
                 <div className="inner-book__bookmark--icon">
@@ -164,17 +169,17 @@ const BooksPage = () => {
                 What's it about?
               </div>
               <div className="inner-book__tags--wrapper">
-                <div className="inner-book__tag">Communication Skills</div>
+                <div className="inner-book__tag">{book?.tags[0]}</div>
                 <div className="inner-book__tag">
-                  Technology &amp; the Future
+                  {book?.tags[1]}
                 </div>
               </div>
               <div className="inner-book__book--description">
-                {Book.bookDescription}
+                {book?.bookDescription}
               </div>
               <h2 className="inner-book__secondary--title">About the author</h2>
               <div className="inner-book__author--description">
-                {Book.authorDescription}
+                {book?.authorDescription}
               </div>
             </div>
             <div className="inner-book--img-wrapper">
@@ -184,14 +189,13 @@ const BooksPage = () => {
               >
                 <img
                   className="book__image"
-                  src="https://firebasestorage.googleapis.com/v0/b/summaristt.appspot.com/o/books%2Fimages%2Fhow-to-win-friends-and-influence-people.png?alt=media&amp;token=099193aa-4d85-4e22-8eb7-55f12a235fe2"
+                  src={book?.imageLink}
                   alt="book"
                   style={{display: "block"}}
                 />
               </figure>
             </div>
           </div>
-          ))}
         </div>
       </div>
     </div>

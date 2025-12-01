@@ -19,9 +19,11 @@ const SuggestedBooks = ({
   bookDescription,
   authorDescription,
 }: book) => {
-    
   return (
     <Link href={`/book/${id}`} className="for-you__recommended--books-link">
+      {/*<div className="book__pill book__pill--subscription-required">
+        
+      </div>*/}
       <audio src={audioLink}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface book {
+  data: any;
   id: string;
   author: string;
   title: string;
@@ -34,7 +35,7 @@ export const booksApi = createApi({
     getSuggestedBooks: builder.query<book[], void>({
       query: () => "getBooks?status=suggested",
     }),
-    getBookById: builder.query<book[], string>({
+    getBookById: builder.query<book, string | boolean>({
       query: (id) => `getBook?id=${id}`
     })
   }),
