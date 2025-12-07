@@ -1,5 +1,9 @@
 import { book } from "@/Redux/booksSlice";
 import Link from "next/link";
+import { RootState } from "@/Redux/store";
+import { useSelector } from "react-redux";
+import { useRef } from "react";
+
 
 const RecommendedBooks = ({
   id,
@@ -20,8 +24,17 @@ const RecommendedBooks = ({
   authorDescription,
 }: book) => {
 
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+    const audioRef = useRef<HTMLAudioElement>(null);
+
+
+
   return (
     <Link href={`/book/${id}`} className="for-you__recommended--books-link">
+      {isAuthenticated ? (
+      <div className="book__pill book__pill--subscription-required">Premium</div>) : ('')}
       <audio src={audioLink}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img
@@ -40,7 +53,7 @@ const RecommendedBooks = ({
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 24 24"
               height="1em"
               width="1em"
@@ -57,7 +70,7 @@ const RecommendedBooks = ({
             <svg
               stroke="currentColor"
               fill="currentColor"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 1024 1024"
               height="1em"
               width="1em"

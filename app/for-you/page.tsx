@@ -10,6 +10,7 @@ const forYouPage = () => {
   const { data: books, isLoading: booksLoading, isError: booksError } = useGetOneBookQuery();
   const { data: Recommended, isLoading: recommededLoading, isError: recommededError } = useGetRecomendedBooksQuery();
   const { data: Suggested, isLoading: suggestedLoading, isError: suggestedError } = useGetSuggestedBooksQuery();
+ 
   
   return (
     <div className="wrapper">
@@ -48,7 +49,7 @@ const forYouPage = () => {
                           <svg
                             stroke="currentColor"
                             fill="currentColor"
-                            stroke-width="0"
+                            strokeWidth="0"
                             viewBox="0 0 16 16"
                             height="1em"
                             width="1em"
