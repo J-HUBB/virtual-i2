@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
 import { RootState } from "@/Redux/store";
 import { getCheckoutUrl, getPortalUrl } from "@/stripePayments";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { firebaseConfig }  from "@/firebase.js"
+import { firebaseConfig } from "@/firebase.js";
 import PlanCard from "@/components/PlanCard";
+import { getPremiumStatus } from "@/getPremiumStatus";
 
 const PLAN_OPTIONS = [
-  { 
-    id: 'yearly', 
-    title: 'Premium Plus Yearly', 
-    price: '$99.99/year', 
-    trial: '7-day free trial included' 
+  {
+    id: "yearly",
+    title: "Premium Plus Yearly",
+    price: "$99.99/year",
+    trial: "7-day free trial included",
   },
-  { 
-    id: 'monthly', 
-    title: 'Premium Monthly', 
-    price: '$9.99/month', 
-    trial: 'No trial included' 
+  {
+    id: "monthly",
+    title: "Premium Monthly",
+    price: "$9.99/month",
+    trial: "No trial included",
   },
 ];
 
 const ChoosePlan = () => {
-
   const [selectedPlanId, setSelectedPlanId] = useState(PLAN_OPTIONS[0].id);
   const handlePlanSelect = (id: string) => {
     setSelectedPlanId(id);
@@ -35,86 +35,49 @@ const ChoosePlan = () => {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const isSubscribed = useSelector((state: RootState) => state.auth.isSubscribed);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const isSubscribed = useSelector(
+    (state: RootState) => state.auth.isSubscribed
+  );
 
   // const userName = auth.currentUser?.displayName;
   // const email = auth.currentUser?.email;
   const router = useRouter();
   const [isPremium, setIsPremium] = useState(false);
 
-  // useEffect(() => {
-  //   // This code will ONLY execute in the browser (client-side)
-  //   try {
-  //       const planCards = document.querySelectorAll('.plan__card');
 
-  //       planCards.forEach(card => {
-  //           // 2. Attach a click event listener to each card
-  //           // Replace this comment with your actual logic for attaching the listener
-  //           card.addEventListener('click', (event) => {
-  //               console.log('Plan card clicked:', event.currentTarget);
-  //               // Add your plan selection logic here
-  //           });
-  //       });
+  // 1. Get a reference to all the accordion headers
+  const accordionHeaders = document.querySelectorAll(".accordion__header");
 
-  //   } catch (error) {
-  //       // Optional: Log any unexpected errors that might occur on the client side
-  //       console.error("Error setting up plan card listeners:", error);
-  //   }
-    
-  // }, []); // The empty array [] means this effect runs once after the initial render.
+  accordionHeaders.forEach((header) => {
+    header.addEventListener("click", () => {
+      // 1. Find the parent element (This result can be null)
+      const parentCard = header.closest(".accordion__card");
 
-//   // 1. Get a reference to all the plan cards
-// const planCards = document.querySelectorAll('.plan__card');
+      // 2. Find the icon (This is safe as it's inside the header)
+      const icon = header.querySelector(".accordion__icon");
 
-// planCards.forEach(card => {
-//   // 2. Attach a click event listener to each card
-//   card.addEventListener('click', () => {
-//     // 3. First, remove the active class from ALL cards
-//     planCards.forEach(c => {
-//       c.classList.remove('plan__card--active');
-//     });
+      // 3. Only proceed if parentCard was successfully found (is NOT null)
+      if (parentCard) {
+        const content = parentCard.querySelector(".collapse");
 
-//     // 4. Then, add the active class to the card that was just clicked
-//     card.classList.add('plan__card--active');
-    
-//     // Optional: Log the ID of the selected plan for payment processing
-//     const selectedPlan = card.getAttribute('data-plan-id');
-//     console.log(`Selected plan: ${selectedPlan}`);
-//   });
-// });
-
-// 1. Get a reference to all the accordion headers
-const accordionHeaders = document.querySelectorAll('.accordion__header');
-
-accordionHeaders.forEach(header => {
-  header.addEventListener('click', () => {
-
-    // 1. Find the parent element (This result can be null)
-    const parentCard = header.closest('.accordion__card');
-    
-    // 2. Find the icon (This is safe as it's inside the header)
-    const icon = header.querySelector('.accordion__icon');
-
-    // 3. FIX: Only proceed if parentCard was successfully found (is NOT null)
-    if (parentCard) {
-        const content = parentCard.querySelector('.collapse'); 
-        
         if (content) {
-            // Toggles the 'show' class to control content visibility
-            content.classList.toggle('show');
+          // Toggles the 'show' class to control content visibility
+          content.classList.toggle("show");
         }
-    }
-    
-    // 4. Toggle icon rotation separately
-    if (icon) {
-      icon.classList.toggle('accordion__icon--rotate');
-    }
-  });
-});
+      }
 
-// Optional: Close all other open accordions (for a single-open setup)
-/*
+      // 4. Toggle icon rotation separately
+      if (icon) {
+        icon.classList.toggle("accordion__icon--rotate");
+      }
+    });
+  });
+
+  // Optional: Close all other open accordions (for a single-open setup)
+  /*
 accordionHeaders.forEach(otherHeader => {
   const otherContent = otherHeader.nextElementSibling;
   if (otherHeader !== header && otherContent.classList.contains('is-open')) {
@@ -183,7 +146,6 @@ accordionHeaders.forEach(otherHeader => {
   //     </div>
   //   </button>
   // );
-
 
   return (
     <div className="wrapper wrapper__full">
@@ -286,31 +248,30 @@ accordionHeaders.forEach(otherHeader => {
                 </div>
               </div>
             </div> */}
-         <>
-         {PLAN_OPTIONS.map((plan) => (
-           <PlanCard key={plan.id}
-              id={plan.id}
-              title={plan.title}
-              price={plan.price}
-              trial={plan.trial}
-              isSelected={plan.id === selectedPlanId}
-              onSelect={handlePlanSelect} />))}
-          </>    
+            <>
+              {PLAN_OPTIONS.map((plan, index) => (
+                <Fragment key={plan.id}>
+                  <PlanCard
+                    key={plan.id}
+                    id={plan.id}
+                    title={plan.title}
+                    price={plan.price}
+                    trial={plan.trial}
+                    isSelected={plan.id === selectedPlanId}
+                    onSelect={handlePlanSelect}
+                  />
+                  {index === 0 && (
+                    <div className="plan__card--separator">
+                      <div className="plan__separator">or</div>
+                    </div>
+                  )}
+                </Fragment>
+              ))}
+            </>
 
-            {/* <div className="plan__card--separator">
-              <div className="plan__separator">or</div>
-            </div>
-            <div className="plan__card " data-plan-id="monthly">
-              <div className="plan__card--circle"></div>
-              <div className="plan__card--content">
-                <div className="plan__card--title">Premium Monthly</div>
-                <div className="plan__card--price">$9.99/month</div>
-                <div className="plan__card--text">No trial included</div>
-              </div>
-            </div> */}
             <div className="plan__card--cta">
               <span className="btn--wrapper">
-                <button className="btn" style={{width: "300px"}}>
+                <button className="btn" style={{ width: "300px" }}>
                   <span>Start your free 7-day trial</span>
                 </button>
               </span>
@@ -341,7 +302,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse show" style={{height: "96px"}}>
+                <div className="collapse show" style={{ height: "96px" }}>
                   <div className="accordion__body">
                     Begin your complimentary 7-day trial with a Summarist annual
                     membership. You are under no obligation to continue your
@@ -375,7 +336,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{height: "0px"}}>
+                <div className="collapse " style={{ height: "0px" }}>
                   <div className="accordion__body">
                     While an annual plan is active, it is not feasible to switch
                     to a monthly plan. However, once the current month ends,
@@ -405,7 +366,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{height: "0px"}}>
+                <div className="collapse " style={{ height: "0px" }}>
                   <div className="accordion__body">
                     Premium membership provides you with the ultimate Summarist
                     experience, including unrestricted entry to many
@@ -436,7 +397,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{height: "0px"}}>
+                <div className="collapse " style={{ height: "0px" }}>
                   <div className="accordion__body">
                     You will not be charged if you cancel your trial before its
                     conclusion. While you will not have complete access to the

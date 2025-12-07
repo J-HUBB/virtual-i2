@@ -18,42 +18,19 @@ const PlanCard: React.FC<PlanCardProps> = ({
   onSelect,
 }) => {
   // Use a class name or style based on the `isSelected` prop
-  const cardClasses = isSelected ? "plan__card--active" : "plan__card";
-
+  const cardClasses = `plan__card ${isSelected ? "plan__card--active" : ""}`;
+  const buttonCtaSwitch = `plan__card ${isSelected ? "btn" : "plan__disclaimer"}`
   return (
-      
-      <>
-      <div
-        className={cardClasses}
-        onClick={() => onSelect(id)} // Attach the handler directly
-      >
-        {/* Radio button / selection indicator goes here */}
-        {/* <input type="radio" checked={isSelected} readOnly /> */}
-
-        {/* Plan details  */}
-        {/* <h3>{title}</h3>
-        <p><strong>{price}</strong></p>
-        <small>{trial}</small> */}
-
-
-      <div className="plan__card plan__card--active" data-plan-id="yearly">
-        <div className="plan__card--circle">
-          <div className="plan__card--dot"></div>
-        </div>
-        <div className="plan__card--content">
-          <div className="plan__card--title">{title}</div>
-          <div className="plan__card--price">{price}</div>
-          <div className="plan__card--text">{trial}</div>
-        </div>
+    <div className={cardClasses} data-plan-id={id} onClick={() => onSelect(id)}>
+      <div className="plan__card--circle">
+        {isSelected && <div className="plan__card--dot" />}
       </div>
-
-
+      <div className="plan__card--content">
+        <div className="plan__card--title">{title}</div>
+        <div className="plan__card--price">{price}</div>
+        <div className="plan__card--text">{trial}</div>
       </div>
-      <div className="plan__card--separator">
-      <div className="plan__separator">or</div>
-      </div> 
-
-    </>
+    </div>
   );
 };
 
