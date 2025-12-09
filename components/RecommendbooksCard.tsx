@@ -25,6 +25,8 @@ const RecommendedBooks = ({
 }: book) => {
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+
   const user = useSelector((state: RootState) => state.auth.user);
 
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -33,8 +35,8 @@ const RecommendedBooks = ({
 
   return (
     <Link href={`/book/${id}`} className="for-you__recommended--books-link">
-      {isAuthenticated ? (
-      <div className="book__pill book__pill--subscription-required">Premium</div>) : ('')}
+      {isAuthenticated && subscriptionRequired ? ('') : (
+      <div className="book__pill book__pill--subscription-required">Premium{subscriptionRequired}</div>)}
       <audio src={audioLink}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img

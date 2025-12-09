@@ -19,7 +19,6 @@ const PlanCard: React.FC<PlanCardProps> = ({
 }) => {
   // Use a class name or style based on the `isSelected` prop
   const cardClasses = `plan__card ${isSelected ? "plan__card--active" : ""}`;
-  const buttonCtaSwitch = `plan__card ${isSelected ? "btn" : "plan__disclaimer"}`
   return (
     <div className={cardClasses} data-plan-id={id} onClick={() => onSelect(id)}>
       <div className="plan__card--circle">

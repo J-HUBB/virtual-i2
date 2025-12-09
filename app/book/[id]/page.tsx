@@ -10,6 +10,7 @@ import { RootState } from "@/Redux/store";
 
 const BooksPage = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isSubscribed = useSelector((state: RootState) => state.auth.isSubscribed);
   const user = useSelector((state: RootState) => state.auth.user);
 
   const {id} = useParams<{ id: string }>();
@@ -32,7 +33,7 @@ const BooksPage = () => {
           <div className="inner__wrapper">
             <div className="inner__book">
               <div className="inner-book__title">
-                {isAuthenticated ?
+                {isAuthenticated && isSubscribed ?
               (`${book?.title}`) : (`${book?.title} (Premium)`)}
               </div>
               <div className="inner-book__author">{book?.author}</div>

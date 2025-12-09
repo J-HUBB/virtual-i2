@@ -47,34 +47,35 @@ const ChoosePlan = () => {
   const router = useRouter();
   const [isPremium, setIsPremium] = useState(false);
 
+  useEffect(() => {
+    // 1. Get a reference to all the accordion headers
+    const accordionHeaders = document.querySelectorAll(".accordion__header");
 
-  // 1. Get a reference to all the accordion headers
-  const accordionHeaders = document.querySelectorAll(".accordion__header");
+    accordionHeaders.forEach((header) => {
+      header.addEventListener("click", () => {
+        // 1. Find the parent element (This result can be null)
+        const parentCard = header.closest(".accordion__card");
 
-  accordionHeaders.forEach((header) => {
-    header.addEventListener("click", () => {
-      // 1. Find the parent element (This result can be null)
-      const parentCard = header.closest(".accordion__card");
+        // 2. Find the icon (This is safe as it's inside the header)
+        const icon = header.querySelector(".accordion__icon");
 
-      // 2. Find the icon (This is safe as it's inside the header)
-      const icon = header.querySelector(".accordion__icon");
+        // 3. Only proceed if parentCard was successfully found (is NOT null)
+        if (parentCard) {
+          const content = parentCard.querySelector(".collapse");
 
-      // 3. Only proceed if parentCard was successfully found (is NOT null)
-      if (parentCard) {
-        const content = parentCard.querySelector(".collapse");
-
-        if (content) {
-          // Toggles the 'show' class to control content visibility
-          content.classList.toggle("show");
+          if (content) {
+            // Toggles the 'show' class to control content visibility
+            content.classList.toggle("show");
+          }
         }
-      }
 
-      // 4. Toggle icon rotation separately
-      if (icon) {
-        icon.classList.toggle("accordion__icon--rotate");
-      }
+        // 4. Toggle icon rotation separately
+        if (icon) {
+          icon.classList.toggle("accordion__icon--rotate");
+        }
+      });
     });
-  });
+  }, []);
 
   // Optional: Close all other open accordions (for a single-open setup)
   /*
@@ -270,15 +271,30 @@ accordionHeaders.forEach(otherHeader => {
             </>
 
             <div className="plan__card--cta">
-              <span className="btn--wrapper">
-                <button className="btn" style={{ width: "300px" }}>
-                  <span>Start your free 7-day trial</span>
-                </button>
-              </span>
-              <div className="plan__disclaimer">
-                Cancel your trial at any time before it ends, and you won’t be
-                charged.
-              </div>
+              {selectedPlanId === "yearly" ? (
+                <>
+                  <span className="btn--wrapper">
+                    <button className="btn" style={{ width: "300px" }}>
+                      <span>Start your free 7-day trial</span>
+                    </button>
+                  </span>
+                  <div className="plan__disclaimer">
+                    Cancel your trial at any time before it ends, and you won’t
+                    be charged.
+                  </div>
+                </>
+              ) : (
+                <>
+                  <span className="btn--wrapper">
+                    <button className="btn" style={{ width: "300px" }}>
+                      <span>Start your first month</span>
+                    </button>
+                  </span>
+                  <div className="plan__disclaimer">
+                    30-day money back guarantee, no questions asked.
+                  </div>
+                </>
+              )}
             </div>
             <div className="faq__wrapper">
               <div className="accordion__card">
@@ -302,7 +318,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse show" style={{ height: "96px" }}>
+                <div className="collapse show">
                   <div className="accordion__body">
                     Begin your complimentary 7-day trial with a Summarist annual
                     membership. You are under no obligation to continue your
@@ -336,7 +352,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{ height: "0px" }}>
+                <div className="collapse">
                   <div className="accordion__body">
                     While an annual plan is active, it is not feasible to switch
                     to a monthly plan. However, once the current month ends,
@@ -366,7 +382,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{ height: "0px" }}>
+                <div className="collapse">
                   <div className="accordion__body">
                     Premium membership provides you with the ultimate Summarist
                     experience, including unrestricted entry to many
@@ -397,7 +413,7 @@ accordionHeaders.forEach(otherHeader => {
                     ></path>
                   </svg>
                 </div>
-                <div className="collapse " style={{ height: "0px" }}>
+                <div className="collapse">
                   <div className="accordion__body">
                     You will not be charged if you cancel your trial before its
                     conclusion. While you will not have complete access to the
