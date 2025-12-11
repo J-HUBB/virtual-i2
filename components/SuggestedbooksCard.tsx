@@ -1,5 +1,8 @@
 import { book } from "@/Redux/booksSlice";
+import { RootState } from "@/Redux/store";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const SuggestedBooks = ({
   id,
@@ -19,12 +22,42 @@ const SuggestedBooks = ({
   bookDescription,
   authorDescription,
 }: book) => {
+
+   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+   const isSubscribed = useSelector((state: RootState) => state.auth.isSubscribed);
+ 
+ 
+   const user = useSelector((state: RootState) => state.auth.user);
+ 
+     const audioRef = useRef<HTMLAudioElement>(null);
+     const [duration, setDuration] = useState<number>(0);
+ 
+     const onLoadedMetadata = () => {
+       const seconds = audioRef.current?.duration;
+       if (seconds !== undefined) {
+         setDuration(seconds);
+       }
+     };
+ 
+     const formatTime = (time: number | undefined): string => {
+       if (typeof time === "number" && !isNaN(time)) {
+         const minutes = Math.floor(time / 60);
+         const seconds = Math.floor(time % 60);
+         const formatMinutes = minutes.toString().padStart(2, "0");
+         const formatSeconds = seconds.toString().padStart(2, "0");
+         return `${formatMinutes}:${formatSeconds}`;
+       }
+       return "00:00";
+     };
+ 
+
   return (
     <Link href={`/book/${id}`} className="for-you__recommended--books-link">
-      {/*<div className="book__pill book__pill--subscription-required">
-        
-      </div>*/}
-      <audio src={audioLink}></audio>
+      {subscriptionRequired && !(isAuthenticated && isSubscribed) ? (
+      <div className="book__pill book__pill--subscription-required">
+        Premium
+      </div>) : ('')}
+      <audio src={audioLink} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
         <img
           className="book__image"
@@ -52,7 +85,7 @@ const SuggestedBooks = ({
               <path d="M13 7h-2v6h6v-2h-4z"></path>
             </svg>
           </div>
-          <div className="recommended__book--details-text">03:24</div>
+          <div className="recommended__book--details-text">{formatTime(duration)}</div>
         </div>
         <div className="recommended__book--details">
           <div className="recommended__book--details-icon">
