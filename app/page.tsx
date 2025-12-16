@@ -8,7 +8,7 @@ import { signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  
+
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -115,7 +115,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 1024 1024"
                       height="1em"
                       width="1em"
@@ -229,7 +229,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -240,7 +240,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -251,7 +251,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -262,7 +262,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -273,7 +273,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -296,7 +296,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -307,7 +307,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -318,7 +318,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -329,7 +329,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -340,7 +340,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -364,7 +364,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -375,7 +375,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -386,7 +386,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -397,7 +397,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -408,7 +408,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -432,7 +432,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -443,7 +443,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -454,7 +454,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -465,7 +465,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -476,7 +476,7 @@ export default function Home() {
                       <svg
                         stroke="currentColor"
                         fill="currentColor"
-                        stroke-width="0"
+                        strokeWidth="0"
                         viewBox="0 0 16 16"
                         height="1em"
                         width="1em"
@@ -512,7 +512,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 24 24"
                       height="1em"
                       width="1em"
@@ -531,7 +531,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 16 16"
                       height="1em"
                       width="1em"
@@ -542,7 +542,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 16 16"
                       height="1em"
                       width="1em"
@@ -553,7 +553,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 16 16"
                       height="1em"
                       width="1em"
@@ -564,7 +564,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 16 16"
                       height="1em"
                       width="1em"
@@ -575,7 +575,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 16 16"
                       height="1em"
                       width="1em"
@@ -594,7 +594,7 @@ export default function Home() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       viewBox="0 0 24 24"
                       height="1em"
                       width="1em"

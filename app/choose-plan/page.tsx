@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { firebaseConfig } from "@/firebase.js";
 import PlanCard from "@/components/PlanCard";
 import { getPremiumStatus } from "@/getPremiumStatus";
+import { collection, getFirestore } from "firebase/firestore";
 
 const PLAN_OPTIONS = [
   {
@@ -34,6 +35,7 @@ const ChoosePlan = () => {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const userId = auth.currentUser?.uid;
 
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -46,6 +48,10 @@ const ChoosePlan = () => {
   // const email = auth.currentUser?.email;
   const router = useRouter();
   const [isPremium, setIsPremium] = useState(false);
+
+
+  const db = getFirestore(app)
+  // const subscriptionsRef = collection(db, "customers", userId, "subscriptions");
 
   useEffect(() => {
     // 1. Get a reference to all the accordion headers

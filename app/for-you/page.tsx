@@ -5,16 +5,17 @@ import Searchbar from "@/components/Searchbar";
 import Sidebar from "@/components/Sidebar";
 import SuggestedBooks from "@/components/SuggestedbooksCard";
 import { useGetOneBookQuery, book, useGetRecomendedBooksQuery, useGetSuggestedBooksQuery} from "@/Redux/booksSlice";
+import { useState } from "react";
 
 const forYouPage = () => {
   const { data: books, isLoading: booksLoading, isError: booksError } = useGetOneBookQuery();
   const { data: Recommended, isLoading: recommededLoading, isError: recommededError } = useGetRecomendedBooksQuery();
   const { data: Suggested, isLoading: suggestedLoading, isError: suggestedError } = useGetSuggestedBooksQuery();
- 
+  
   
   return (
     <div className="wrapper">
-      <Searchbar />
+      <Searchbar /*searchTerm={searchTerm} setSearchTerm={setSearchTerm}*/ />
       <Sidebar />
       <div className="row">
         <div className="container">

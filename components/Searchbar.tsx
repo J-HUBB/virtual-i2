@@ -1,5 +1,26 @@
-export default function Searchbar() {
-  
+"use client";
+
+import { useGetBookByAuthorOrTitleQuery, book, useGetOneBookQuery } from "@/Redux/booksSlice";
+import { useState } from "react";
+import { useDebounce } from "use-debounce";
+import BookCard from "./BookCard";
+
+const Searchbar = () => {
+  const { data: results, isLoading: resultsLoading, isError: resultsError } = useGetOneBookQuery();
+  const { data: books, isLoading: booksLoading, isError: booksError } = useGetBookByAuthorOrTitleQuery();
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [ bookList, setBookList] = useState([]);
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+
+ 
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
+
   return (
     <div className="search__background">
       <div className="search__wrapper">
@@ -13,7 +34,8 @@ export default function Searchbar() {
                 className="search__input"
                 placeholder="Search for books"
                 type="text"
-                value=""
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <div className="search__icon">
                 <svg
@@ -49,7 +71,13 @@ export default function Searchbar() {
             </svg>
           </div>
         </div>
+        <div className="search__books--wrapper">
+          {results?.map((Book: book) => (
+          <BookCard  {...Book} />))}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Searchbar;
