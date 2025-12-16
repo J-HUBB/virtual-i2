@@ -4,18 +4,41 @@ import RecommendedBooks from "@/components/RecommendbooksCard";
 import Searchbar from "@/components/Searchbar";
 import Sidebar from "@/components/Sidebar";
 import SuggestedBooks from "@/components/SuggestedbooksCard";
-import { useGetOneBookQuery, book, useGetRecomendedBooksQuery, useGetSuggestedBooksQuery} from "@/Redux/booksSlice";
+import {
+  useGetOneBookQuery,
+  book,
+  useGetRecomendedBooksQuery,
+  useGetSuggestedBooksQuery,
+} from "@/Redux/booksSlice";
 import { useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const forYouPage = () => {
-  const { data: books, isLoading: booksLoading, isError: booksError } = useGetOneBookQuery();
-  const { data: Recommended, isLoading: recommededLoading, isError: recommededError } = useGetRecomendedBooksQuery();
-  const { data: Suggested, isLoading: suggestedLoading, isError: suggestedError } = useGetSuggestedBooksQuery();
+  const {
+    data: books,
+    isLoading: booksLoading,
+    isError: booksError,
+  } = useGetOneBookQuery();
+  const {
+    data: Recommended,
+    isLoading: recommededLoading,
+    isError: recommededError,
+  } = useGetRecomendedBooksQuery();
+  const {
+    data: Suggested,
+    isLoading: suggestedLoading,
+    isError: suggestedError,
+  } = useGetSuggestedBooksQuery();
+
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
   
-  
+
   return (
     <div className="wrapper">
-      <Searchbar /*searchTerm={searchTerm} setSearchTerm={setSearchTerm}*/ />
+      <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Sidebar />
       <div className="row">
         <div className="container">

@@ -1,25 +1,21 @@
 "use client";
 
 import { useGetBookByAuthorOrTitleQuery, book, useGetOneBookQuery } from "@/Redux/booksSlice";
-import { useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useEffect, useState } from "react";
 import BookCard from "./BookCard";
 
 const Searchbar = () => {
-  const { data: results, isLoading: resultsLoading, isError: resultsError } = useGetOneBookQuery();
-  const { data: books, isLoading: booksLoading, isError: booksError } = useGetBookByAuthorOrTitleQuery();
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [ bookList, setBookList] = useState([]);
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
+  const { data: books, isLoading: booksLoading, isError: booksError } = useGetBookByAuthorOrTitleQuery(debouncedSearchTerm, {skip: debouncedSearchTerm.length < 3,});
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+     return () => clearTimeout(handler);
+  }, [searchTerm]);
 
-
- 
-  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   return (
     <div className="search__background">
@@ -72,8 +68,8 @@ const Searchbar = () => {
           </div>
         </div>
         <div className="search__books--wrapper">
-          {results?.map((Book: book) => (
-          <BookCard  {...Book} />))}
+          {books?.map((Book: book) => (
+          <BookCard key={Book.id}  {...Book} />))}
         </div>
       </div>
     </div>
