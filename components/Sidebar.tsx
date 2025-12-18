@@ -6,15 +6,53 @@ import LoginModal from "./LoginModal";
 import { RootState } from "@/Redux/store";
 import { auth } from "@/firebase";
 import { signOut } from "firebase/auth";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { setFontSize } from "@/Redux/textSizeSlice";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  /*const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );*/
   const user = useSelector((state: RootState) => state.auth.user);
 
+  const pathname = usePathname();
+
+  const { isAuthenticated, isSubscribed } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  const isPlayerPage = pathname === "/player/${id}";
+  const showFontControls = isPlayerPage && isAuthenticated && isSubscribed;
+
+  const fontSizes = [
+    { label: "Small", size: 16 },
+    { label: "Medium", size: 18 },
+    { label: "Large", size: 20 },
+    { label: "Extra Large", size: 22 },
+  ];
+
   const handleLogout = async () => {
-    await signOut(auth)
-  }
+    await signOut(auth);
+  };
+
+  // useEffect(() => {
+  //   // 1. Get a reference to all the accordion headers
+  //   const allLinks = document.querySelectorAll(".sidebar__link--line");
+
+  //   allLinks.forEach((link) => {
+  //     link.classList.remove("active--tab");
+  //   });
+
+  //   allLinks.forEach((link) => {
+  //     const anchor = link.closest('a');
+  //     if (anchor && anchor.getAttribute('href') === pathname) {
+  //       link.classList.add('active--tab');
+
+  //       const indicator = document
+  //     }
+  //   })
 
   return (
     <>
@@ -108,6 +146,98 @@ export default function Sidebar() {
             </div>
           </div>
           <div className="sidebar__bottom">
+            {showFontControls && (
+              <div className="sidebar__link--wrapper sidebar__font--size-wrapper">
+                {fontSizes.map((sizes) => (
+                  <>
+                    <div className="sidebar__link--text sidebar__font--size-icon sidebar__font--size-icon--active">
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 24 24"
+                        className="sidebar__font--size-icon-small"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                        key={sizes.label}
+                        onClick={() => dispatch(setFontSize(sizes.size))}
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                        </g>
+                        {sizes.label}
+                      </svg>
+                    </div>
+                    <div className="sidebar__link--text sidebar__font--size-icon">
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 24 24"
+                        className="sidebar__font--size-icon-medium"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                        key={sizes.label}
+                        onClick={() => dispatch(setFontSize(sizes.size))}
+
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                        </g>
+                        {sizes.label}
+                      </svg>
+                    </div>
+                    <div className="sidebar__link--text sidebar__font--size-icon">
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 24 24"
+                        className="sidebar__font--size-icon-large"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                        key={sizes.label}
+                        onClick={() => dispatch(setFontSize(sizes.size))}
+
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                        </g>
+                        {sizes.label}
+                      </svg>
+                    </div>
+                    <div className="sidebar__link--text sidebar__font--size-icon">
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        strokeWidth="0"
+                        viewBox="0 0 24 24"
+                        className="sidebar__font--size-icon-xlarge"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                        key={sizes.label}
+                        onClick={() => dispatch(setFontSize(sizes.size))}
+
+                      >
+                        <g>
+                          <path fill="none" d="M0 0h24v24H0z"></path>
+                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                        </g>
+                        {sizes.label}
+                      </svg>
+                    </div>
+                  </>
+                ))}
+              </div>
+            )}
+
             <a className="sidebar__link--wrapper" href="/settings">
               <div className="sidebar__link--line "></div>
               <div className="sidebar__icon--wrapper">
@@ -171,8 +301,11 @@ export default function Sidebar() {
                 </svg>
               </div>
               <div className="sidebar__link--text">
-                {isAuthenticated ? (<button onClick={handleLogout}>Logout</button>) :
-                (<button onClick={() => dispatch(openModal())}>Login</button>)}
+                {isAuthenticated ? (
+                  <button onClick={handleLogout}>Logout</button>
+                ) : (
+                  <button onClick={() => dispatch(openModal())}>Login</button>
+                )}
               </div>
               <LoginModal />
             </div>

@@ -10,8 +10,7 @@ import {
   useGetRecomendedBooksQuery,
   useGetSuggestedBooksQuery,
 } from "@/Redux/booksSlice";
-import { useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useRef, useState } from "react";
 
 const forYouPage = () => {
   const {
@@ -30,24 +29,47 @@ const forYouPage = () => {
     isError: suggestedError,
   } = useGetSuggestedBooksQuery();
 
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [duration, setDuration] = useState<number>(0);
 
-  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
-  
+  const onLoadedMetadata = () => {
+    const seconds = audioRef.current?.duration;
+    if (seconds !== undefined) {
+      setDuration(seconds);
+    }
+  };
+
+  const formatTime = (time: number | undefined): string => {
+    if (typeof time === "number" && !isNaN(time)) {
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60);
+      const formatMinutes = minutes.toString().padStart(1, "0");
+      const formatSeconds = seconds.toString().padStart(2, "0");
+      return `${formatMinutes} mins ${formatSeconds} secs`;
+    }
+    return "00 mins 00 secs";
+  };
 
   return (
     <div className="wrapper">
-      <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Searchbar />
       <Sidebar />
       <div className="row">
         <div className="container">
           <div className="for-you__wrapper">
             <div className="for-you__title">Selected just for you</div>
-            <audio src="/"></audio>
-            <>
-              {books?.map((item: book) => (
-                <a key={item.id} className="selected__book" href="">
+            {books?.map((item: book) => (
+                <a
+                  key={item.id}
+                  className="selected__book"
+                  href={`/book/${item.id}`}
+                >
+                  <audio
+                    src={item?.audioLink}
+                    ref={audioRef}
+                    preload="metadata"
+                    onLoadedMetadata={onLoadedMetadata}
+                  />
                   <div className="selected__book--sub-title">
                     {item.subTitle}
                   </div>
@@ -83,14 +105,13 @@ const forYouPage = () => {
                           </svg>
                         </div>
                         <div className="selected__book--duration">
-                          5 mins 25 secs
+                          {formatTime(duration)}
                         </div>
                       </div>
                     </div>
                   </div>
                 </a>
-              ))}
-            </>
+            ))}
 
             <div>
               <div className="for-you__title">Recommended For You</div>

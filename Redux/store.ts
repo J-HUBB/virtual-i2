@@ -4,12 +4,14 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { useRef } from "react";
 import modalSlice from "./modalSlice";
 import authSlice from "./authSlice";
+import textSizeSlice from "./textSizeSlice";
 
 export const store = configureStore({
   reducer: {
     [booksApi.reducerPath]: booksApi.reducer,
     modal: modalSlice,
     auth: authSlice,
+    textSettings: textSizeSlice,
   },
 
   middleware: (getDefaultMiddleware) =>

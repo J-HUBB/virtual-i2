@@ -11,6 +11,8 @@ import {
   useRef,
   useState,
 } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
 
 const PlayerPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -138,6 +140,8 @@ const PlayerPage = () => {
   }
  };
 
+ const fontSize = useSelector((state: RootState) => state.textSettings.fontSize);
+
   console.log(useGetBookByIdQuery(id));
 
   return (
@@ -145,7 +149,7 @@ const PlayerPage = () => {
       <Searchbar />
       <Sidebar />
       <div className="summary">
-        <div className="audio__book--summary" style={{ fontSize: "16px" }}>
+        <div className="audio__book--summary" style={{ fontSize: fontSize }}>
           <div className="audio__book--summary-title">
             <b>{book?.title}</b>
           </div>

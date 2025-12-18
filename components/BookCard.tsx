@@ -43,7 +43,7 @@ const BookCard = ({
   };
 
   return (
-    <a className="search__book--link" href="/book/5bxl50cz4bt">
+    <a className="search__book--link" href={`/book/${id}`}>
       <audio
         src={audioLink}
         ref={audioRef}
