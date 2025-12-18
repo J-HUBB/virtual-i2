@@ -81,7 +81,7 @@ export default function Sidebar() {
         <div className="sidebar__wrapper">
           <div className="sidebar__top">
             <a className="sidebar__link--wrapper" href="/for-you">
-              <div className="sidebar__link--line active--tab"></div>
+              <div className={`sidebar__link--line active--tab ? "sidebar__link--line active--tab" : "sidebar__link--line" `}></div>
               <div className="sidebar__icon--wrapper">
                 <svg
                   stroke="currentColor"
