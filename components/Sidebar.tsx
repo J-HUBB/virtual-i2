@@ -23,15 +23,22 @@ export default function Sidebar() {
     (state: RootState) => state.auth
   );
 
-  const isPlayerPage = pathname === "/player/${id}";
-  const showFontControls = isPlayerPage && isAuthenticated && isSubscribed;
+  const textSize = useSelector(
+    (state: RootState) => state.textSettings?.fontSize || 16
+  );
 
-  const fontSizes = [
-    { label: "Small", size: 16 },
-    { label: "Medium", size: 18 },
-    { label: "Large", size: 20 },
-    { label: "Extra Large", size: 22 },
-  ];
+  const handleFontSizeChange = (size: number) => {
+    dispatch(setFontSize(size));
+  };
+
+  // const isPlayerPage = pathname === "/player";
+  // const showFontControls = isPlayerPage; {/*&& isAuthenticated && isSubscribed*/}
+  // const fontSizes = [
+  //   { label: "Small", size: 16 },
+  //   { label: "Medium", size: 18 },
+  //   { label: "Large", size: 20 },
+  //   { label: "Extra Large", size: 22 },
+  // ];
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -146,95 +153,97 @@ export default function Sidebar() {
             </div>
           </div>
           <div className="sidebar__bottom">
-            {showFontControls && (
+            {/* Font size changer */}
+            {pathname?.startsWith("/player/") && (
               <div className="sidebar__link--wrapper sidebar__font--size-wrapper">
-                {fontSizes.map((sizes) => (
-                  <>
-                    <div className="sidebar__link--text sidebar__font--size-icon sidebar__font--size-icon--active">
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth="0"
-                        viewBox="0 0 24 24"
-                        className="sidebar__font--size-icon-small"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                        key={sizes.label}
-                        onClick={() => dispatch(setFontSize(sizes.size))}
-                      >
-                        <g>
-                          <path fill="none" d="M0 0h24v24H0z"></path>
-                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-                        </g>
-                        {sizes.label}
-                      </svg>
-                    </div>
-                    <div className="sidebar__link--text sidebar__font--size-icon">
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth="0"
-                        viewBox="0 0 24 24"
-                        className="sidebar__font--size-icon-medium"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                        key={sizes.label}
-                        onClick={() => dispatch(setFontSize(sizes.size))}
-
-                      >
-                        <g>
-                          <path fill="none" d="M0 0h24v24H0z"></path>
-                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-                        </g>
-                        {sizes.label}
-                      </svg>
-                    </div>
-                    <div className="sidebar__link--text sidebar__font--size-icon">
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth="0"
-                        viewBox="0 0 24 24"
-                        className="sidebar__font--size-icon-large"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                        key={sizes.label}
-                        onClick={() => dispatch(setFontSize(sizes.size))}
-
-                      >
-                        <g>
-                          <path fill="none" d="M0 0h24v24H0z"></path>
-                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-                        </g>
-                        {sizes.label}
-                      </svg>
-                    </div>
-                    <div className="sidebar__link--text sidebar__font--size-icon">
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth="0"
-                        viewBox="0 0 24 24"
-                        className="sidebar__font--size-icon-xlarge"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                        key={sizes.label}
-                        onClick={() => dispatch(setFontSize(sizes.size))}
-
-                      >
-                        <g>
-                          <path fill="none" d="M0 0h24v24H0z"></path>
-                          <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
-                        </g>
-                        {sizes.label}
-                      </svg>
-                    </div>
-                  </>
-                ))}
+                <div
+                  className={`sidebar__link--text sidebar__font--size-icon ${
+                    textSize === 16 ? "sidebar__font--size-icon--active" : ""
+                  }`}
+                  onClick={() => handleFontSizeChange(16)}
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 24 24"
+                    className="sidebar__font--size-icon-small"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g>
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div
+                  className={`sidebar__link--text sidebar__font--size-icon ${
+                    textSize === 18 ? "sidebar__font--size-icon--active" : ""
+                  }`}
+                  onClick={() => handleFontSizeChange(18)}
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 24 24"
+                    className="sidebar__font--size-icon-medium"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g>
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div
+                  className={`sidebar__link--text sidebar__font--size-icon ${
+                    textSize === 20 ? "sidebar__font--size-icon--active" : ""
+                  }`}
+                  onClick={() => handleFontSizeChange(20)}
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 24 24"
+                    className="sidebar__font--size-icon-large"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g>
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div
+                  className={`sidebar__link--text sidebar__font--size-icon ${
+                    textSize === 22 ? "sidebar__font--size-icon--active" : ""
+                  }`}
+                  onClick={() => handleFontSizeChange(22)}
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 24 24"
+                    className="sidebar__font--size-icon-xlarge"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g>
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path d="M11.246 15H4.754l-2 5H.6L7 4h2l6.4 16h-2.154l-2-5zm-.8-2L8 6.885 5.554 13h4.892zM21 12.535V12h2v8h-2v-.535a4 4 0 1 1 0-6.93zM19 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                    </g>
+                  </svg>
+                </div>
               </div>
             )}
 
