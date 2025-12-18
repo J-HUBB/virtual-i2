@@ -27,6 +27,8 @@ export default function Sidebar() {
     (state: RootState) => state.textSettings?.fontSize || 16
   );
 
+  const isActive = pathname === "/for-you";
+
   const handleFontSizeChange = (size: number) => {
     dispatch(setFontSize(size));
   };
@@ -81,7 +83,7 @@ export default function Sidebar() {
         <div className="sidebar__wrapper">
           <div className="sidebar__top">
             <a className="sidebar__link--wrapper" href="/for-you">
-              <div className={`sidebar__link--line active--tab ? "sidebar__link--line active--tab" : "sidebar__link--line" `}></div>
+              <div className={`sidebar__link--line ${isActive ? "active--tab" : ""}`}></div>
               <div className="sidebar__icon--wrapper">
                 <svg
                   stroke="currentColor"
@@ -248,7 +250,7 @@ export default function Sidebar() {
             )}
 
             <a className="sidebar__link--wrapper" href="/settings">
-              <div className="sidebar__link--line "></div>
+              <div className={`sidebar__link--line ${isActive ? "active--tab" : ""}`}></div>
               <div className="sidebar__icon--wrapper">
                 <svg
                   stroke="currentColor"
