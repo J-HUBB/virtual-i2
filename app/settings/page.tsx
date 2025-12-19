@@ -14,15 +14,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Settings = () => {
-  // const accountSummary = (
-  //   <div>
-  //     <div className="text-slate-500 mb-1">Signed in as {userName}</div>
-  //     <div className="text-slate-300 text-xl">{email}</div>
-  //   </div>
-  // );
-
-  // const statusPanel = isPremium ? <PremiumPanel /> : <StandardPanel />;
-  // const memberButton = isPremium ? managePortalButton : upgradeToPremiumButton;
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);

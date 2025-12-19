@@ -3,6 +3,7 @@
 import RecommendedBooks from "@/components/RecommendbooksCard";
 import Searchbar from "@/components/Searchbar";
 import Sidebar from "@/components/Sidebar";
+import Skeleton from "@/components/SkeletonLoading";
 import SuggestedBooks from "@/components/SuggestedbooksCard";
 import {
   useGetOneBookQuery,
@@ -19,12 +20,12 @@ const forYouPage = () => {
     isError: booksError,
   } = useGetOneBookQuery();
   const {
-    data: Recommended,
-    isLoading: recommededLoading,
-    isError: recommededError,
+    data: recommended,
+    isLoading: recommendedLoading,
+    isError: recommendedError,
   } = useGetRecomendedBooksQuery();
   const {
-    data: Suggested,
+    data: suggested,
     isLoading: suggestedLoading,
     isError: suggestedError,
   } = useGetSuggestedBooksQuery();
@@ -58,7 +59,10 @@ const forYouPage = () => {
         <div className="container">
           <div className="for-you__wrapper">
             <div className="for-you__title">Selected just for you</div>
-            {books?.map((item: book) => (
+            {booksLoading ? (
+              <div className="selected__book--skeleton"></div>
+            ) : (
+              books?.map((item: book) => (
                 <a
                   key={item.id}
                   className="selected__book"
@@ -111,28 +115,118 @@ const forYouPage = () => {
                     </div>
                   </div>
                 </a>
-            ))}
+              ))
+            )}
 
             <div>
               <div className="for-you__title">Recommended For You</div>
               <div className="for-you__sub--title">
                 We think you'll like these
               </div>
-              <div className="for-you__recommended--books">
-                {Recommended?.map((Book: book) => (
-                  <RecommendedBooks key={Book.id} {...Book} />
-                ))}
-              </div>
+              {recommendedLoading ? (
+                new Array(8).fill(0).map((_, index) => (
+                  <div key={index} className="recommended__books--skeleton-wrapper">
+                    <a className="for-you__recommended--books-link">
+                      <figure
+                        className="book__image--wrapper"
+                        style={{ marginBottom: "8px" }}
+                      >
+                        <div
+                          className="skeleton"
+                          style={{ display: "block", height: "172px" }}
+                        />
+                      </figure>
+                      <div className="recommended__book--title">
+                        <Skeleton
+                          display="flex"
+                          height="19.33px"
+                          width="172px"
+                        />
+                      </div>
+                      <div className="recommended__book--author">
+                        <Skeleton
+                          display="flex"
+                          height="16.67px"
+                          width="168px"
+                        />
+                      </div>
+                      <div className="recommended__book--sub-title">
+                        <Skeleton
+                          display="flex"
+                          height="33.33px"
+                          width="160px"
+                        />
+                      </div>
+                      <div className="recommended__book--details-wrapper">
+                        <Skeleton
+                          display="flex"
+                          height="16.67px"
+                          width="168px"
+                        />
+                      </div>
+                    </a>
+                  </div>
+                ))
+              ) : (
+                <div className="for-you__recommended--books">
+                  {recommended?.map((Book: book) => (
+                    <RecommendedBooks key={Book.id} {...Book} />
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
               <div className="for-you__title">Suggested Books</div>
               <div className="for-you__sub--title">Browse those books</div>
+               {suggestedLoading ? (new Array(8).fill(0).map((_, index) => (
+                  <div key={index} className="recommended__books--skeleton-wrapper">
+                    <a className="for-you__recommended--books-link">
+                      <figure
+                        className="book__image--wrapper"
+                        style={{ marginBottom: "8px" }}
+                      >
+                        <div
+                          className="skeleton"
+                          style={{ display: "block", height: "172px" }}
+                        />
+                      </figure>
+                      <div className="recommended__book--title">
+                        <Skeleton
+                          display="flex"
+                          height="19.33px"
+                          width="172px"
+                        />
+                      </div>
+                      <div className="recommended__book--author">
+                        <Skeleton
+                          display="flex"
+                          height="16.67px"
+                          width="168px"
+                        />
+                      </div>
+                      <div className="recommended__book--sub-title">
+                        <Skeleton
+                          display="flex"
+                          height="33.33px"
+                          width="160px"
+                        />
+                      </div>
+                      <div className="recommended__book--details-wrapper">
+                        <Skeleton
+                          display="flex"
+                          height="16.67px"
+                          width="168px"
+                        />
+                      </div>
+                    </a>
+                  </div>
+                ))) : (
               <div className="for-you__recommended--books">
-                {Suggested?.map((Book: book) => (
+                {suggested?.map((Book: book) => (
                   <SuggestedBooks key={Book.id} {...Book} />
                 ))}
-              </div>
+              </div>)}
             </div>
           </div>
         </div>
