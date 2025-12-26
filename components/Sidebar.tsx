@@ -178,6 +178,25 @@ export default function Sidebar() {
         </div>
         <div className="sidebar__wrapper">
           <div className="sidebar__top">
+                        {/* Font size changer */}
+            {pathname?.startsWith("/player/") && (
+              <div className="sidebar__link--wrapper sidebar__font--size-wrapper">
+                {[16, 18, 20, 22].map((size) => (
+                  <div
+                    key={size}
+                    className={`sidebar__link--text sidebar__font--size-icon ${
+                      textSize === size
+                        ? "sidebar__font--size-icon--active"
+                        : ""
+                    }`}
+                    onClick={() => handleFontSizeChange(size)}
+                  >
+                    <span>{size}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {links.map((link) => (
               <a
                 key={link.href}
@@ -197,7 +216,7 @@ export default function Sidebar() {
             ))}
           </div>
           <div className="sidebar__bottom">
-            {/* Font size changer */}
+            {/* Font size changer
             {pathname?.startsWith("/player/") && (
               <div className="sidebar__link--wrapper sidebar__font--size-wrapper">
                 {[16, 18, 20, 22].map((size) => (
@@ -214,7 +233,7 @@ export default function Sidebar() {
                   </div>
                 ))}
               </div>
-            )}
+            )} */}
 
             <div className="sidebar__link--wrapper">
               <div className="sidebar__link--line "></div>

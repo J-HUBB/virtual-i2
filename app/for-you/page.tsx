@@ -85,7 +85,7 @@ const forYouPage = () => {
                     >
                       <img
                         className="book__image"
-                        src={item.imageLink}
+                        src={item?.imageLink}
                         alt="The Lean Start Up"
                       />
                     </figure>
@@ -124,9 +124,9 @@ const forYouPage = () => {
                 We think you'll like these
               </div>
               {recommendedLoading ? (
-                new Array(8).fill(0).map((_, index) => (
-                  <div key={index} className="recommended__books--skeleton-wrapper">
-                    <a className="for-you__recommended--books-link">
+                <div className="for-you__recommended--books">
+                    {new Array(8).fill(0).map((_, index) => (
+                    <a key={index} className="for-you__recommended--books-link">
                       <figure
                         className="book__image--wrapper"
                         style={{ marginBottom: "8px" }}
@@ -165,8 +165,8 @@ const forYouPage = () => {
                         />
                       </div>
                     </a>
+                  ))}
                   </div>
-                ))
               ) : (
                 <div className="for-you__recommended--books">
                   {recommended?.map((Book: book) => (
@@ -179,9 +179,10 @@ const forYouPage = () => {
             <div>
               <div className="for-you__title">Suggested Books</div>
               <div className="for-you__sub--title">Browse those books</div>
-               {suggestedLoading ? (new Array(8).fill(0).map((_, index) => (
-                  <div key={index} className="recommended__books--skeleton-wrapper">
-                    <a className="for-you__recommended--books-link">
+               {suggestedLoading ? (
+                 <div className="for-you__recommended--books">
+                 {new Array(8).fill(0).map((_, index) => (
+                    <a key={index} className="for-you__recommended--books-link">
                       <figure
                         className="book__image--wrapper"
                         style={{ marginBottom: "8px" }}
@@ -220,8 +221,9 @@ const forYouPage = () => {
                         />
                       </div>
                     </a>
+                ))}
                   </div>
-                ))) : (
+                ) : (
               <div className="for-you__recommended--books">
                 {suggested?.map((Book: book) => (
                   <SuggestedBooks key={Book.id} {...Book} />

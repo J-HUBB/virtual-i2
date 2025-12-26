@@ -1,4 +1,12 @@
-const Skeleton = ({ width, height, display }) => {
+const Skeleton = ({
+  width,
+  height,
+  display,
+}: {
+  width: string;
+  height: string;
+  display: string;
+}) => {
   return (
     <div
       className="skeleton"

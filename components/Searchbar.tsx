@@ -126,9 +126,9 @@ const Searchbar = () => {
             {booksLoading ? (
               <div
                 className="skeleton"
-                style={{ width: "100%", height: "120px", marginBottom: "8px", backgroundColor: "light-gray" }}
+                style={{ width: "100%", height: "120px", marginBottom: "8px", backgroundColor: "lightgray" }}
               />
-            ) : books?.length > 0 ? (
+            ) : books && books?.length > 0 ? (
               books?.map((Book: book) => <BookCard key={Book.id} {...Book} />)
             ) : (
               <p>No book found</p>

@@ -13,14 +13,19 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const PlayerPage = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const { id } = useParams<{ id: string }>();
   const {
     data: book,
     isLoading: booksLoading,
     isError: booksError,
   } = useGetBookByIdQuery(id);
+
+
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [timeProgress, setTimeProgress] = useState<number>(0);
@@ -111,8 +116,18 @@ const PlayerPage = () => {
     setIsPlaying(true);
   const handlePause = (e: SyntheticEvent<HTMLAudioElement, Event>) =>
     setIsPlaying(false);
-  const handleEnded = (e: SyntheticEvent<HTMLAudioElement, Event>) =>
+  const handleEnded = async (e: SyntheticEvent<HTMLAudioElement, Event>) => {
+      if (user && id) {
+        try {
+          const bookRef = doc(db, 'users', user.uid, 'library', id);
+          await updateDoc(bookRef, { status: 'finished' });
+        } catch (error) {
+          console.error("Error updating book status:", error);
+        }
+  }
+
     setIsPlaying(false);
+  }
 
   const skipBackward = () => {
   if (audioRef.current) {
@@ -141,6 +156,13 @@ const PlayerPage = () => {
  };
 
  const fontSize = useSelector((state: RootState) => state.textSettings.fontSize);
+
+//  const handleFinished = async () => {
+//   if (user) {
+//     const bookRef = doc(db, 'users', user.uid, 'library', currentBookId);
+//     await updateDoc(bookRef, { status: 'finished' });
+//   }
+//  };
 
   console.log(useGetBookByIdQuery(id));
 
