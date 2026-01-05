@@ -13,8 +13,9 @@ import {
 } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+import Skeleton from "@/components/SkeletonLoading";
 
 const PlayerPage = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -24,8 +25,6 @@ const PlayerPage = () => {
     isLoading: booksLoading,
     isError: booksError,
   } = useGetBookByIdQuery(id);
-
-
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [timeProgress, setTimeProgress] = useState<number>(0);
@@ -117,24 +116,37 @@ const PlayerPage = () => {
   const handlePause = (e: SyntheticEvent<HTMLAudioElement, Event>) =>
     setIsPlaying(false);
   const handleEnded = async (e: SyntheticEvent<HTMLAudioElement, Event>) => {
-      if (user && id) {
-        try {
-          const bookRef = doc(db, 'users', user.uid, 'library', id);
-          await updateDoc(bookRef, { status: 'finished' });
-        } catch (error) {
-          console.error("Error updating book status:", error);
-        }
-  }
+    if (user && id) {
+      try {
+        const bookRef = doc(db, "users", user.uid, "library", id);
+        await setDoc(
+          bookRef,
+          {
+            status: "finished",
+            title: book?.title,
+            author: book?.author,
+            imageLink: book?.imageLink,
+            subTitle: book?.subTitle,
+            audioLink: book?.audioLink,
+            averageRating: book?.averageRating,
+            addedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      } catch (error) {
+        console.error("Error updating book status:", error);
+      }
+    }
 
     setIsPlaying(false);
-  }
+  };
 
   const skipBackward = () => {
-  if (audioRef.current) {
-    audioRef.current.currentTime -= 10;
-    updateProgress();
-  }
- };
+    if (audioRef.current) {
+      audioRef.current.currentTime -= 10;
+      updateProgress();
+    }
+  };
 
   const togglePlayAndPause = () => {
     if (audioRef.current) {
@@ -149,20 +161,22 @@ const PlayerPage = () => {
   };
 
   const skipForward = () => {
-  if (audioRef.current) {
-    audioRef.current.currentTime += 15;
-    updateProgress();
-  }
- };
+    if (audioRef.current) {
+      audioRef.current.currentTime += 15;
+      updateProgress();
+    }
+  };
 
- const fontSize = useSelector((state: RootState) => state.textSettings.fontSize);
+  const fontSize = useSelector(
+    (state: RootState) => state.textSettings.fontSize
+  );
 
-//  const handleFinished = async () => {
-//   if (user) {
-//     const bookRef = doc(db, 'users', user.uid, 'library', currentBookId);
-//     await updateDoc(bookRef, { status: 'finished' });
-//   }
-//  };
+  //  const handleFinished = async () => {
+  //   if (user) {
+  //     const bookRef = doc(db, 'users', user.uid, 'library', currentBookId);
+  //     await updateDoc(bookRef, { status: 'finished' });
+  //   }
+  //  };
 
   console.log(useGetBookByIdQuery(id));
 
@@ -171,12 +185,29 @@ const PlayerPage = () => {
       <Searchbar />
       <Sidebar />
       <div className="summary">
-        <div className="audio__book--summary" style={{ fontSize: fontSize }}>
-          <div className="audio__book--summary-title">
-            <b>{book?.title}</b>
+        {booksLoading ? (
+          <div className="audio__book--spinner">
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              version="1.1"
+              viewBox="0 0 16 16"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M8 16c-2.137 0-4.146-0.832-5.657-2.343s-2.343-3.52-2.343-5.657c0-1.513 0.425-2.986 1.228-4.261 0.781-1.239 1.885-2.24 3.193-2.895l0.672 1.341c-1.063 0.533-1.961 1.347-2.596 2.354-0.652 1.034-0.997 2.231-0.997 3.461 0 3.584 2.916 6.5 6.5 6.5s6.5-2.916 6.5-6.5c0-1.23-0.345-2.426-0.997-3.461-0.635-1.008-1.533-1.822-2.596-2.354l0.672-1.341c1.308 0.655 2.412 1.656 3.193 2.895 0.803 1.274 1.228 2.748 1.228 4.261 0 2.137-0.832 4.146-2.343 5.657s-3.52 2.343-5.657 2.343z"></path>
+            </svg>
           </div>
-          <div className="audio__book--summary-text">{book?.summary}</div>
-        </div>
+        ) : (
+          <div className="audio__book--summary" style={{ fontSize: fontSize }}>
+            <div className="audio__book--summary-title">
+              <b>{book?.title}</b>
+            </div>
+            <div className="audio__book--summary-text">{book?.summary}</div>
+          </div>
+        )}
         <div className="audio__wrapper">
           <audio
             src={book?.audioLink}
@@ -188,21 +219,52 @@ const PlayerPage = () => {
           />
           <div className="audio__track--wrapper">
             <figure className="audio__track--image-mask">
-              <figure
-                className="book__image--wrapper"
-                style={{ height: "48px", width: "48px", minWidth: "48px" }}
-              >
-                <img
-                  className="book__image"
-                  src={book?.imageLink}
-                  alt="book"
-                  style={{ display: "block" }}
-                />
-              </figure>
+              {booksLoading ? (
+                <figure
+                  className="book__image--wrapper"
+                  style={{ height: "48px", width: "48px", minWidth: "48px" }}
+                >
+                  <Skeleton width={"48px"} height={"48px"} display={"block"} />
+                </figure>
+              ) : (
+                <figure
+                  className="book__image--wrapper"
+                  style={{ height: "48px", width: "48px", minWidth: "48px" }}
+                >
+                  <img
+                    className="book__image"
+                    src={book?.imageLink}
+                    alt="book"
+                    style={{ display: "block" }}
+                    loading="lazy"
+                  />
+                </figure>
+              )}
             </figure>
             <div className="audio__track--details-wrapper">
-              <div className="audio__track--title">{book?.title}</div>
-              <div className="audio__track--author">{book?.author}</div>
+              {booksLoading ? (
+                <>
+                  <div className="audio__track--title">
+                    <Skeleton
+                      width={"45px"}
+                      height={"16px"}
+                      display={"block"}
+                    />
+                  </div>
+                  <div className="audio__track--author">
+                    <Skeleton
+                      width={"89px"}
+                      height={"16px"}
+                      display={"block"}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="audio__track--title">{book?.title}</div>
+                  <div className="audio__track--author">{book?.author}</div>
+                </>
+              )}
             </div>
           </div>
           <div className="audio__controls--wrapper">

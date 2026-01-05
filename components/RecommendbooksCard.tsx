@@ -31,6 +31,9 @@ const RecommendedBooks = ({
     (state: RootState) => state.auth.isSubscribed
   );
 
+  const [loading, setLoading] = useState(true);
+
+
   const user = useSelector((state: RootState) => state.auth.user);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -53,7 +56,7 @@ const RecommendedBooks = ({
     }
     return "00:00";
   };
-
+ console.log(formatTime(duration))
   return (
     <Link href={`/book/${id}`} className="for-you__recommended--books-link">
       {subscriptionRequired && !(isAuthenticated && isSubscribed) ? (
@@ -70,11 +73,14 @@ const RecommendedBooks = ({
         onLoadedMetadata={onLoadedMetadata}
       ></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
+        {loading && <img className="book__image--skeleton" /*style={{ width: "100%", height: "100%"}}*/ />}
         <img
           className="book__image"
           src={imageLink}
           alt="book"
-          style={{ display: "block" }}
+          style={{ display: loading ? "none" : "block" }}
+          onLoad={() => setLoading(false)}
+          onError={() => setLoading(false)}
         />
       </figure>
       <div className="recommended__book--title">{title}</div>

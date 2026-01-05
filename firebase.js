@@ -7,26 +7,18 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: "AIzaSyDTzdrtXj39FN0y0YrZZgGn9l3PiawuNQQ",
-  authDomain: "summarist-book-app.firebaseapp.com",
-  projectId: "summarist-book-app",
-  storageBucket: "summarist-book-app.firebasestorage.app",
-  messagingSenderId: "602157475276",
-  appId: "1:602157475276:web:086e9da5189811fe2ea969"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize firebase for client-side use
-// function initializeFirebaseApp() {
-//   if (!getApps().length) {
-//     return initializeApp(firebaseConfig)
-//   } else {
-//     return getApp();
-//   }
-// }
-
-// const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+// Initialize Firebase (Singleton pattern for Next.js)
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export {app};
 export const db = getFirestore(app);
 export const auth = getAuth(app);

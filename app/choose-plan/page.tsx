@@ -49,49 +49,39 @@ const ChoosePlan = () => {
   const router = useRouter();
   const [isPremium, setIsPremium] = useState(false);
 
-
-  const db = getFirestore(app)
+  const db = getFirestore(app);
   // const subscriptionsRef = collection(db, "customers", userId, "subscriptions");
 
-  useEffect(() => {
-    // 1. Get a reference to all the accordion headers
-    const accordionHeaders = document.querySelectorAll(".accordion__header");
+  const faqData = [
+    {
+      question: "How does the free 7-day trial work?",
+      answer:
+        "Begin your complimentary 7-day trial with a Summarist annual membership. You are under no obligation to continue your subscription, and you will only be billed when the trial period expires. With Premium access, you can learn at your own pace and as frequently as you desire, and you may terminate your subscription prior to the conclusion of the 7-day free trial.",
+    },
+    {
+      question:
+        "Can I switch subscriptions from monthly to yearly, or yearly to monthly?",
+      answer:
+        "While an annual plan is active, it is not feasible to switch to a monthly plan. However, once the current month ends, transitioning from a monthly plan to an annual plan is an option.",
+    },
+    {
+      question: "What's included in the Premium plan?",
+      answer:
+        "Premium membership provides you with the ultimate Summarist experience, including unrestricted entry to many best-selling books high-quality audio, the ability to download titles for offline reading, and the option to send your reads to your Kindle.",
+    },
+    {
+      question: "Can I cancel during my trial or subscription?",
+      answer:
+        "You will not be charged if you cancel your trial before its conclusion. While you will not have complete access to the entire Summarist library, you can still expand your knowledge with one curated book per day.",
+    },
+  ];
 
-    accordionHeaders.forEach((header) => {
-      header.addEventListener("click", () => {
-        // 1. Find the parent element (This result can be null)
-        const parentCard = header.closest(".accordion__card");
-
-        // 2. Find the icon (This is safe as it's inside the header)
-        const icon = header.querySelector(".accordion__icon");
-
-        // 3. Only proceed if parentCard was successfully found (is NOT null)
-        if (parentCard) {
-          const content = parentCard.querySelector(".collapse");
-
-          if (content) {
-            // Toggles the 'show' class to control content visibility
-            content.classList.toggle("show");
-          }
-        }
-
-        // 4. Toggle icon rotation separately
-        if (icon) {
-          icon.classList.toggle("accordion__icon--rotate");
-        }
-      });
-    });
-  }, []);
-
-  // Optional: Close all other open accordions (for a single-open setup)
-  /*
-accordionHeaders.forEach(otherHeader => {
-  const otherContent = otherHeader.nextElementSibling;
-  if (otherHeader !== header && otherContent.classList.contains('is-open')) {
-    otherContent.classList.remove('is-open');
-  }
-});
-*/
+  //  const Accordion = () => {
+  // 2. Track which index is currently open (null means all closed)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const toggleAccordion = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   useEffect(() => {
     const checkPremium = async () => {
@@ -280,7 +270,7 @@ accordionHeaders.forEach(otherHeader => {
               {selectedPlanId === "yearly" ? (
                 <>
                   <span className="btn--wrapper">
-                    <button className="btn" style={{ width: "300px" }}>
+                    <button className="btn" style={{ width: "300px" }} disabled>
                       <span>Start your free 7-day trial</span>
                     </button>
                   </span>
@@ -292,7 +282,7 @@ accordionHeaders.forEach(otherHeader => {
               ) : (
                 <>
                   <span className="btn--wrapper">
-                    <button className="btn" style={{ width: "300px" }}>
+                    <button className="btn" style={{ width: "300px" }} disabled>
                       <span>Start your first month</span>
                     </button>
                   </span>
@@ -303,131 +293,41 @@ accordionHeaders.forEach(otherHeader => {
               )}
             </div>
             <div className="faq__wrapper">
-              <div className="accordion__card">
-                <div className="accordion__header">
-                  <div className="accordion__title">
-                    How does the free 7-day trial work?
-                  </div>
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 16 16"
-                    className="accordion__icon accordion__icon--rotate"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
+              {faqData.map((faq, index) => (
+                <div key={index} className="accordion__card">
+                  <div
+                    className="accordion__header"
+                    onClick={() => toggleAccordion(index)}
+                    style={{ cursor: "pointer" }}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="collapse show">
-                  <div className="accordion__body">
-                    Begin your complimentary 7-day trial with a Summarist annual
-                    membership. You are under no obligation to continue your
-                    subscription, and you will only be billed when the trial
-                    period expires. With Premium access, you can learn at your
-                    own pace and as frequently as you desire, and you may
-                    terminate your subscription prior to the conclusion of the
-                    7-day free trial.
+                    <div className="accordion__title">{faq.question}</div>
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth="0"
+                      viewBox="0 0 16 16"
+                      className={`accordion__icon ${
+                        activeIndex === index ? "accordion__icon--rotate" : ""
+                      }`}
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                      ></path>
+                    </svg>
                   </div>
-                </div>
-              </div>
-              <div className="accordion__card">
-                <div className="accordion__header">
-                  <div className="accordion__title">
-                    Can I switch subscriptions from monthly to yearly, or yearly
-                    to monthly?
-                  </div>
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 16 16"
-                    className="accordion__icon "
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    className={`collapse ${
+                      activeIndex === index ? "show" : ""
+                    }`}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="collapse">
-                  <div className="accordion__body">
-                    While an annual plan is active, it is not feasible to switch
-                    to a monthly plan. However, once the current month ends,
-                    transitioning from a monthly plan to an annual plan is an
-                    option.
+                    <div className="accordion__body">{faq.answer}</div>
                   </div>
                 </div>
-              </div>
-              <div className="accordion__card">
-                <div className="accordion__header">
-                  <div className="accordion__title">
-                    What's included in the Premium plan?
-                  </div>
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 16 16"
-                    className="accordion__icon "
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="collapse">
-                  <div className="accordion__body">
-                    Premium membership provides you with the ultimate Summarist
-                    experience, including unrestricted entry to many
-                    best-selling books high-quality audio, the ability to
-                    download titles for offline reading, and the option to send
-                    your reads to your Kindle.
-                  </div>
-                </div>
-              </div>
-              <div className="accordion__card">
-                <div className="accordion__header">
-                  <div className="accordion__title">
-                    Can I cancel during my trial or subscription?
-                  </div>
-                  <svg
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 16 16"
-                    className="accordion__icon "
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="collapse">
-                  <div className="accordion__body">
-                    You will not be charged if you cancel your trial before its
-                    conclusion. While you will not have complete access to the
-                    entire Summarist library, you can still expand your
-                    knowledge with one curated book per day.
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

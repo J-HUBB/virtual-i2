@@ -7,9 +7,15 @@ import Sidebar from "@/components/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import { openModal } from "@/Redux/modalSlice";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Skeleton from "@/components/SkeletonLoading";
-import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 
 const BooksPage = () => {
@@ -36,16 +42,29 @@ const BooksPage = () => {
 
   console.log(useGetBookByIdQuery(id));
 
+  useEffect(() => {
+    if (!user || !isAuthenticated || !book?.id) return;
+
+    const bookRef = doc(db, "users", user?.uid, "library", book.id);
+    const unsubscribe = onSnapshot(bookRef, (docSnap) => {
+      setIsSaved(docSnap.exists());
+    });
+    return () => unsubscribe();
+  }, [user, isAuthenticated, book?.id]);
+
   const handleAdd = async () => {
-    if (!isAuthenticated || !user) {
+    if (!isAuthenticated || !user?.uid || !book?.id) {
       dispatch(openModal());
+      return;
     }
 
     const bookRef = doc(db, "users", user.uid, "library", book.id);
+    if (!bookRef) return;
 
     try {
       if (isSaved) {
         await deleteDoc(bookRef);
+        setIsSaved(false);
       } else {
         await setDoc(
           bookRef,
@@ -53,6 +72,9 @@ const BooksPage = () => {
             title: book?.title,
             author: book?.author,
             imageLink: book?.imageLink,
+            subTitle: book?.subTitle,
+            audioLink: book?.audioLink,
+            averageRating: book?.averageRating,
             status: "reading",
             addedAt: serverTimestamp(),
           },
@@ -64,15 +86,6 @@ const BooksPage = () => {
     }
   };
 
-  const handleRemove = async () => {
-    if (!isAuthenticated || !user) return;
-    try {
-      const bookRef = doc(db, "users", user.uid, "library", book.id);
-      await deleteDoc(bookRef);
-    } catch (error) {
-      console.error("Error removing book: ", error);
-    }
-  };
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [duration, setDuration] = useState<number>(0);

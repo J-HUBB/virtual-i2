@@ -8,17 +8,16 @@ import { signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const user = useSelector((state: RootState) => state.auth.user);
-  const loading = useSelector((state: RootState) => state.auth.loading);
+  // const user = useSelector((state: RootState) => state.auth.user);
+  // const loading = useSelector((state: RootState) => state.auth.loading);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
+  // const handleLogout = async () => {
+  //   await signOut(auth);
+  // };
 
   return (
     <>
@@ -56,7 +55,12 @@ export default function Home() {
                     <br className="remove--tablet" />
                     and even people who don’t like to read.
                   </div>
-                  <button onClick={() => dispatch(openModal())} className="btn home__cta--btn">Login</button>
+                  <button
+                    onClick={() => dispatch(openModal())}
+                    className="btn home__cta--btn"
+                  >
+                    Login
+                  </button>
                 </div>
                 <figure className="landing__image--mask">
                   <img src="./assets/landing.png" alt="landing" />
@@ -132,18 +136,40 @@ export default function Home() {
               </div>
               <div className="statistics__wrapper">
                 <div className="statistics__content--header">
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 0 } as React.CSSProperties}
+                  >
                     Enhance your knowledge
                   </div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 1 } as React.CSSProperties}
+                  >
                     Achieve greater success
                   </div>
-                  <div className="statistics__heading">Improve your health</div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 2 } as React.CSSProperties}
+                  >
+                    Improve your health
+                  </div>
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 3 } as React.CSSProperties}
+                  >
                     Develop better parenting skills
                   </div>
-                  <div className="statistics__heading">Increase happiness</div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 4 } as React.CSSProperties}
+                  >
+                    Increase happiness
+                  </div>
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 5 } as React.CSSProperties}
+                  >
                     Be the best version of yourself!
                   </div>
                 </div>
@@ -196,20 +222,40 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="statistics__content--header statistics__content--header-second">
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 6 } as React.CSSProperties}
+                  >
                     Expand your learning
                   </div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 7 } as React.CSSProperties}
+                  >
                     Accomplish your goals
                   </div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 8 } as React.CSSProperties}
+                  >
                     Strengthen your vitality
                   </div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 9 } as React.CSSProperties}
+                  >
                     Become a better caregiver
                   </div>
-                  <div className="statistics__heading">Improve your mood</div>
-                  <div className="statistics__heading">
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 10 } as React.CSSProperties}
+                  >
+                    Improve your mood
+                  </div>
+                  <div
+                    className="statistics__heading"
+                    style={{ "--i": 11 } as React.CSSProperties}
+                  >
                     Maximize your abilities
                   </div>
                 </div>
@@ -495,7 +541,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="reviews__btn--wrapper">
-                <button onClick={() => dispatch(openModal())} className="btn home__cta--btn">Login</button>
+                <button
+                  onClick={() => dispatch(openModal())}
+                  className="btn home__cta--btn"
+                >
+                  Login
+                </button>
               </div>
             </div>
           </div>

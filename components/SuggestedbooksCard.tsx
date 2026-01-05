@@ -25,7 +25,8 @@ const SuggestedBooks = ({
 
    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
    const isSubscribed = useSelector((state: RootState) => state.auth.isSubscribed);
- 
+
+   const [loading, setLoading] = useState(true);
  
    const user = useSelector((state: RootState) => state.auth.user);
  
@@ -59,11 +60,14 @@ const SuggestedBooks = ({
       </div>) : ('')}
       <audio src={audioLink} ref={audioRef} preload="metadata" onLoadedMetadata={onLoadedMetadata}></audio>
       <figure className="book__image--wrapper" style={{ marginBottom: 8 }}>
+        {loading && <img className="book__image--skeleton"  />}
         <img
           className="book__image"
           src={imageLink}
           alt="book"
-          style={{ display: "block" }}
+          style={{ display: loading ? "none" : "block" }}
+          onLoad={() => setLoading(false)}
+          onError={() => setLoading(false)}
         />
       </figure>
       <div className="recommended__book--title">{title}</div>

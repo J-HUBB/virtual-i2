@@ -7,6 +7,7 @@ import {
 } from "@/Redux/booksSlice";
 import { useEffect, useRef, useState } from "react";
 import BookCard from "./BookCard";
+import SearchbarBookCard from "./SearchbarBookCard";
 
 const Searchbar = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -16,7 +17,7 @@ const Searchbar = () => {
     isLoading: booksLoading,
     isError: booksError,
   } = useGetBookByAuthorOrTitleQuery(debouncedSearchTerm, {
-    skip: debouncedSearchTerm.length < 0,
+    skip: debouncedSearchTerm.length === 0,
   });
   const [isOpen, setIsOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -129,7 +130,7 @@ const Searchbar = () => {
                 style={{ width: "100%", height: "120px", marginBottom: "8px", backgroundColor: "lightgray" }}
               />
             ) : books && books?.length > 0 ? (
-              books?.map((Book: book) => <BookCard key={Book.id} {...Book} />)
+              books?.map((Book: book) => <SearchbarBookCard key={Book.id} {...Book} />)
             ) : (
               <p>No book found</p>
             )}

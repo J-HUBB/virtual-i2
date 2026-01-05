@@ -30,6 +30,13 @@ const authSlice = createSlice({
             state.loading = false;
         },
 
+        clearAuth: (state) => {
+            state.user = null;
+            state.isAuthenticated = false;
+            state.isSubscribed = false;
+            state.loading = false;
+        },
+
         setSubscriptionsStatus: (state, action: PayloadAction<boolean>) => {
             state.isSubscribed = action.payload;
         },
@@ -40,5 +47,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { setUser, setLoading, setSubscriptionsStatus } = authSlice.actions;
+export const { setUser, setLoading, setSubscriptionsStatus, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

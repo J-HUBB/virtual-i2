@@ -244,11 +244,38 @@ input[type="range"]::before {
   font-weight: 300;
 }
 
+:root {
+  --item-count: 6;
+  --display-time: 2s;
+}
+
 .statistics__heading {
   font-size: 32px;
   font-weight: 500;
   color: #6b757b;
   margin-bottom: 16px;
+  transition: color 0.3s ease;
+  animation-name: textGlow;
+  animation-duration: calc(var(--item-count) * var(--display-time));
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--i) * var(--display-time));
+}
+
+@keyframes textGlow {
+  0% {
+    color:#2bd97c;
+  }
+  16.66% {
+    color: #2bd97c;
+    /* transform: translateX(10px); */
+  }
+  16.67% {
+    color: #6b757b;
+    transform: translateX(0);
+  }
+  100% {
+    color: #6b757b;
+  }
 }
 
 .statistics__heading:last-child {
@@ -1311,10 +1338,14 @@ input[type="range"]::before {
 }
 
 .skeleton {
+  display: inline-block;
+  height: 1em;
+  position: relative;
+  overflow: hidden;
   background-color: #e4e4e4;
 }
 
-.skeleton::after{
+.skeleton::after {
   position: absolute;
   top: 0;
   right: 0;
@@ -1498,7 +1529,7 @@ input[type="range"]::before {
   position: relative;
   height: 0;
   overflow: hidden;
-  transition: height 0.35s ease;
+  transition: height 0.35s ease-in-out;
 }
 
 .collapse.show {
