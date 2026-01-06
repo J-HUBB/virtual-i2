@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { firebaseConfig } from "@/firebase.js";
 import PlanCard from "@/components/PlanCard";
 import { getPremiumStatus } from "@/getPremiumStatus";
-import { collection, getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const PLAN_OPTIONS = [
   {
@@ -76,8 +76,8 @@ const ChoosePlan = () => {
     },
   ];
 
-  //  const Accordion = () => {
-  // 2. Track which index is currently open (null means all closed)
+  //  Accordion 
+  //  Track which index is currently open (null means all closed)
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -233,18 +233,6 @@ const ChoosePlan = () => {
               </div>
             </div>
             <div className="section__title">Choose the plan that fits you</div>
-            {/* <div className="plan__card plan__card--active" data-plan-id="yearly">
-              <div className="plan__card--circle">
-                <div className="plan__card--dot"></div>
-              </div>
-              <div className="plan__card--content">
-                <div className="plan__card--title">Premium Plus Yearly</div>
-                <div className="plan__card--price">$99.99/year</div>
-                <div className="plan__card--text">
-                  7-day free trial included
-                </div>
-              </div>
-            </div> */}
             <>
               {PLAN_OPTIONS.map((plan, index) => (
                 <Fragment key={plan.id}>

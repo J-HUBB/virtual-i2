@@ -14,7 +14,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type ViewMode = "login" | "signup" | "forgotPassword";
@@ -30,10 +30,27 @@ const LoginModal = () => {
   const [ViewMode, setViewMode] = useState<ViewMode>("login");
 
   const dispatch = useDispatch();
+  const modalRef = useRef<HTMLDivElement>(null);
   const isOpen = useSelector((state: RootState) => state.modal.isModalOpen);
 
+  
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        dispatch(closeModal());
+      }
+    }
+    
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, dispatch]);
+  
   if (!isOpen) return null;
-
+  
   //   Helper to reset input fields when switching views
   const resetForm = (mode: ViewMode) => {
     setError(null);
@@ -107,11 +124,15 @@ const LoginModal = () => {
 
   const handleGuestLogin = async () => {
     setError(null);
+    setLoading(true)
     try {
       await signInAnonymously(auth);
       dispatch(closeModal());
+      router.push("/for-you");
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -134,7 +155,7 @@ const LoginModal = () => {
   const renderForgotPasswordView = () => {
     return (
       <div className="auth__wrapper">
-        <div className="auth">
+        <div className="auth" ref={modalRef}>
           <div className="auth__content">
             <div className="auth__title">Reset your password</div>
             <form onSubmit={handleForgotPassword} className="auth__main--form">
@@ -182,7 +203,7 @@ const LoginModal = () => {
 
   const renderAuthForm = () => (
     <div className="auth__wrapper">
-      <div className="auth">
+      <div className="auth" ref={modalRef}>
         <div className="auth__content">
           <div className="auth__title">
             {ViewMode === "signup"

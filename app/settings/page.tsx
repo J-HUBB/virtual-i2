@@ -3,7 +3,6 @@
 import Searchbar from "@/components/Searchbar";
 import Sidebar from "@/components/Sidebar";
 import { auth, firebaseConfig } from "@/firebase";
-import { getPremiumStatus } from "@/getPremiumStatus";
 import { openModal } from "@/Redux/modalSlice";
 import { RootState } from "@/Redux/store";
 import { getCheckoutUrl, getPortalUrl } from "@/stripePayments";

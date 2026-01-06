@@ -42,6 +42,7 @@ const BookCard = ({
     return "00:00";
   };
   console.log(formatTime(duration));
+
   return (
     <a className="for-you__recommended--books-link" href={`/book/${id}`}>
       <audio
@@ -52,7 +53,7 @@ const BookCard = ({
       ></audio>
       <figure
         className="book__image--wrapper"
-        style={{ /*height: "172px", width: "172px",*/ marginBottom: "8px" }}
+        style={{ marginBottom: "8px" }}
       >
         <img
           className="book__image"
@@ -61,7 +62,6 @@ const BookCard = ({
           style={{ display: "block" }}
         />
       </figure>
-      {/* <div> */}
       <div className="recommended__book--title">{title}</div>
       <div className="recommended__book--author">{author}</div>
       <div className="recommended__book--sub-title">{subTitle}</div>

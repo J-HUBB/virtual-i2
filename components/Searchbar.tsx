@@ -3,10 +3,8 @@
 import {
   useGetBookByAuthorOrTitleQuery,
   book,
-  useGetOneBookQuery,
 } from "@/Redux/booksSlice";
 import { useEffect, useRef, useState } from "react";
-import BookCard from "./BookCard";
 import SearchbarBookCard from "./SearchbarBookCard";
 
 const Searchbar = () => {
@@ -124,13 +122,25 @@ const Searchbar = () => {
         </div>
         {isOpen && searchTerm.length > 0 && (booksLoading || books) && (
           <div ref={searchContainerRef} className="search__books--wrapper">
-            {booksLoading ? (
-              <div
-                className="skeleton"
-                style={{ width: "100%", height: "120px", marginBottom: "8px", backgroundColor: "lightgray" }}
-              />
+            {booksLoading || searchTerm !== debouncedSearchTerm ? (
+              new Array(6)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="skeleton"
+                    style={{
+                      width: "100%",
+                      height: "120px",
+                      marginBottom: "8px",
+                      backgroundColor: "lightgray",
+                    }}
+                  />
+                ))
             ) : books && books?.length > 0 ? (
-              books?.map((Book: book) => <SearchbarBookCard key={Book.id} {...Book} />)
+              books?.map((Book: book) => (
+                <SearchbarBookCard key={Book.id} {...Book} />
+              ))
             ) : (
               <p>No book found</p>
             )}

@@ -15,6 +15,7 @@ const db = getFirestore(app);
 export function ReduxProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // if (!user) return;
+    let unsubscribeFirestore: (() => void) | null = null;
     // This listener handles both Auth state and firestore sync
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       // Update the general auth state in Redux
@@ -22,29 +23,44 @@ export function ReduxProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         const userData = { uid: user.uid, email: user.email };
         store.dispatch(setUser(userData));
+        // store.dispatch(setUser({ uid: user.uid, email: user.email }));
 
         const userDocRef = doc(db, "users", user.uid);
-        const unsubscribeFirestore = onSnapshot(userDocRef, (docSnap) => {
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            const isSubscribed = userData.isSubscribed === true;
-            // Update the subscription status globally in Redux
-            store.dispatch(setSubscriptionsStatus(isSubscribed));
-          } else {
-            // Document dosen't exist yet
-            store.dispatch(setSubscriptionsStatus(false));
+        // Start the listener and save the function to our variable
+        unsubscribeFirestore = onSnapshot(
+          userDocRef,
+          (docSnap) => {
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              // const isSubscribed = userData.isSubscribed === true;
+              // Update the subscription status globally in Redux
+              store.dispatch(
+                setSubscriptionsStatus(data.isSubscribed === true)
+              );
+            } else {
+              store.dispatch(setSubscriptionsStatus(false));
+            }
+          },
+          (error) => {
+            if (error.code === "permission-denied") {
+              console.warn("Firestore listener detached safely.");
+            }
           }
-        });
-        // Clean up function for when user logs out
-        return () => unsubscribeFirestore();
+        );
       } else {
-        //  If user logs out, reset subscription status
+        if (unsubscribeFirestore) {
+          unsubscribeFirestore();
+          unsubscribeFirestore = null;
+        }
         store.dispatch(setUser(null));
         store.dispatch(setSubscriptionsStatus(false));
       }
     });
 
-    return () => unsubscribeAuth();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeFirestore) unsubscribeFirestore();
+    };
   }, []);
 
   return <Provider store={store}>{children}</Provider>;
